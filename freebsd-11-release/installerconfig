@@ -1,0 +1,6 @@
+PARTITIONS=ada0
+DISTRIBUTIONS="kernel.txz base.txz"
+
+#!/bin/sh -eu
+echo "installerconfig"
+date -R
