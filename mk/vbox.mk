@@ -60,7 +60,9 @@ $(VBOX_HDD):
 # -- vm actions
 
 .PHONY: vm-install
-vm-install: $(ISO_NEW)
+vm-install: .vm.install
+
+.vm.install: $(ISO_NEW)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): install'
 	@echo '>>>'
@@ -68,6 +70,7 @@ vm-install: $(ISO_NEW)
 		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
 	$(VBOXMAN) modifyvm $(VBOX_VM) --boot1 dvd --boot2 disk
 	$(VBOXMAN) startvm $(VBOX_VM) --type gui
+	@touch .vm.install
 
 .PHONY: vm-start
 vm-start:

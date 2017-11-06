@@ -8,9 +8,6 @@ ISO_NEW := $(WORKDIR)/$(VM_ID).iso
 
 .PHONY: build-installer
 build-installer: $(ISO_NEW)
-	@echo '>>>'
-	@echo '>>> $(VM_ID): installer $(ISO_NEW)'
-	@echo '>>>'
 
 $(ISO_ORIG):
 	@echo '>>>'
