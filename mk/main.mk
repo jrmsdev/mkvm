@@ -1,5 +1,9 @@
+# -- default target (build)
+
 .PHONY: default
-default: build
+default: build-installer
+
+# -- includes
 
 include ./vm.mk
 include ../mk/vars.mk
@@ -8,47 +12,46 @@ include ../mk/vars.mk
 
 .PHONY: clean
 clean:
-	@echo '=== $(VM_ID): clean'
+	@echo '>>> $(VM_ID): clean'
 	@rm -rf $(WORKDIR)/rootfs/*
 	@rm -vrf $(WORKDIR)/rootfs
 	@rm -vf $(ISO_NEW) .vm.*
 
 .PHONY: distclean
 distclean: clean
-	@echo '=== $(VM_ID): distclean'
+	@echo '>>> $(VM_ID): distclean'
 	@rm -vrf work
 
-# -- sub targets for internal use mainly
-
-.PHONY: iso-extract
-iso-extract: $(WORKDIR)/rootfs
-
-.PHONY: iso-mkfs
-iso-mkfs: $(ISO_NEW)
-
-.PHONY: rootfs-info
-rootfs-info: $(ISO_NEW)
+.PHONY: build-installer
+build-installer: $(ISO_NEW)
+	@echo '>>> $(VM_ID): installer $(ISO_NEW)'
 
 # -- ISO files
 
 $(ISO_ORIG):
-	@echo '=== $(VM_ID): fetch iso'
+	@echo '>>> $(VM_ID): fetch iso'
 	mkdir -p $(WORKDIR)
 	fetch -r -o $(ISO_ORIG).xz $(ISO_URL)
 	$(ISO_XZ) && unxz $(ISO_ORIG).xz
 
-$(WORKDIR)/rootfs: $(ISO_ORIG)
-	@echo '=== $(VM_ID): iso extract'
-	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
-	mkdir -p $(WORKDIR)/rootfs
-	tar -C $(WORKDIR)/rootfs -xf $(ISO_ORIG)
-
-$(ISO_NEW): $(MKVM_TXT)
-	@echo '=== $(VM_ID): mkisofs'
+$(ISO_NEW): .vm.rootfs
+	@echo '>>> $(VM_ID): mkisofs'
 	fakeroot mkisofs -quiet -J -R -no-emul-boot -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
-		-b boot/cdboot -o $(ISO_NEW) $(WORKDIR)/rootfs
+		-b boot/cdboot -o $(ISO_NEW) $(ROOTFS)
 
-$(MKVM_TXT): $(WORKDIR)/rootfs
-	@echo '=== $(VM_ID): save rootfs info'
-	date -R >$(MKVM_TXT)
+# -- rootfs
+
+.vm.rootfs: $(ISO_ORIG)
+	@echo '>>> $(VM_ID): iso extract'
+	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
+	rm -rf $(ROOTFS)
+	mkdir -p $(ROOTFS)
+	tar -C $(ROOTFS) -xf $(ISO_ORIG)
+	$(MAKE) vm-rootfs
+	@touch .vm.rootfs
+
+$(MKVM_TXT):
+	@echo '>>> $(VM_ID): rootfs info $(MKVM_TXT)'
+	@echo '$(VM_ID)' >$(MKVM_TXT)
+	@date -R >>$(MKVM_TXT)
 	cat $(MKVM_TXT)
