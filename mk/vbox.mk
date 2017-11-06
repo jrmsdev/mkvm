@@ -6,17 +6,25 @@ VBOX_HDD := $(WORKDIR)/$(VM_ID)-hdd.vhd
 VBOX_HDD_MB ?= 16384
 VBOX_HDD_FORMAT := VHD
 
+# -- cleanup
+
 .PHONY: vbox-distclean
 vbox-distclean:
-	@echo '>>> $(VM_ID): vbox distclean $(VBOX_VM)'
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vbox distclean'
+	@echo '>>>'
 	$(VBOXMAN) unregistervm $(VBOX_VM) --delete
 	@rm -vf .vbox.*
 
-.PHONY: vbox-vm
-vbox-vm: .vbox.vm
+# -- create vm
 
-.vbox.vm: $(VBOX_HDD)
-	@echo '>>> $(VM_ID): vbox vm $(VBOX_VM)'
+.PHONY: vbox-vm
+vbox-vm: $(VBOX_HDD) .vbox.vm
+
+.vbox.vm:
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vbox $(VBOX_VM)'
+	@echo '>>>'
 	$(VBOXMAN) createvm --name $(VBOX_VM) --ostype $(VBOX_OS) --register
 	$(VBOXMAN) modifyvm $(VBOX_VM) \
 		--memory $(VBOX_MEM) \
@@ -39,6 +47,22 @@ vbox-vm: .vbox.vm
 		--port 0 --device 0 --type hdd --medium $(VBOX_HDD)
 	@touch .vbox.vm
 
+# -- create vm hdd
+
 $(VBOX_HDD):
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vbox hdd'
+	@echo '>>>'
 	$(VBOXMAN) createmedium disk --filename $(VBOX_HDD) \
 		--size $(VBOX_HDD_MB) --format $(VBOX_HDD_FORMAT)
+
+# -- install vm
+
+.PHONY: vm-install
+vm-install:
+	@echo '>>>'
+	@echo '>>> $(VM_ID): install'
+	@echo '>>>'
+	$(VBOXMAN) storageattach $(VBOX_VM) --storagectl 'IDE Controller' \
+		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
+	$(VBOXMAN) startvm $(VBOX_VM) --type gui

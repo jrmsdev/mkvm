@@ -8,23 +8,31 @@ ISO_NEW := $(WORKDIR)/$(VM_ID).iso
 
 .PHONY: build-installer
 build-installer: $(ISO_NEW)
+	@echo '>>>'
 	@echo '>>> $(VM_ID): installer $(ISO_NEW)'
+	@echo '>>>'
 
 $(ISO_ORIG):
+	@echo '>>>'
 	@echo '>>> $(VM_ID): fetch iso'
+	@echo '>>>'
 	mkdir -p $(WORKDIR)
 	fetch -r -o $(ISO_ORIG).xz $(ISO_URL)
 	$(ISO_XZ) && unxz $(ISO_ORIG).xz
 
 $(ISO_NEW): .vm.rootfs
+	@echo '>>>'
 	@echo '>>> $(VM_ID): mkisofs'
+	@echo '>>>'
 	fakeroot mkisofs -quiet -J -R -no-emul-boot -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
 		-b boot/cdboot -o $(ISO_NEW) $(ROOTFS)
 
 # -- rootfs
 
 .vm.rootfs: $(ISO_ORIG)
+	@echo '>>>'
 	@echo '>>> $(VM_ID): iso extract'
+	@echo '>>>'
 	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
 	rm -rf $(ROOTFS)
 	mkdir -p $(ROOTFS)
@@ -33,7 +41,9 @@ $(ISO_NEW): .vm.rootfs
 	@touch .vm.rootfs
 
 $(MKVM_TXT):
+	@echo '>>>'
 	@echo '>>> $(VM_ID): rootfs info $(MKVM_TXT)'
+	@echo '>>>'
 	@echo '$(VM_ID)' >$(MKVM_TXT)
 	@date -R >>$(MKVM_TXT)
 	cat $(MKVM_TXT)

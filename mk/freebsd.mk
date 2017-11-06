@@ -3,7 +3,9 @@ DISTDIR := $(ROOTFS)/usr/freebsd-dist
 
 
 vm-rootfs: .vm.distfiles
+	@echo '>>>'
 	@echo '>>> $(VM_ID): vm-rootfs'
+	@echo '>>>'
 
 	echo '/dev/iso9660/$(VM_ID) / cd9660 ro 0 0' >$(ROOTFS)/etc/fstab
 
@@ -20,7 +22,9 @@ vm-rootfs: .vm.distfiles
 
 
 .vm.distfiles:
+	@echo '>>>'
 	@echo '>>> $(VM_ID): vm.distfiles'
+	@echo '>>>'
 	mkdir -p $(WORKDIR)/dist
 	fetch -r -o $(WORKDIR)/dist/MANIFEST $(DIST_URL)/MANIFEST
 	fetch -r -o $(WORKDIR)/dist/kernel.txz $(DIST_URL)/kernel.txz

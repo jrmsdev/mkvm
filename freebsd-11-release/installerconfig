@@ -2,6 +2,7 @@ PARTITIONS=ada0
 DISTRIBUTIONS="kernel.txz base.txz"
 
 #!/bin/sh -eu
-echo "installerconfig"
+echo "mkvm vm installation done!!"
 date -R
 sleep 5
+shutdown -p now
