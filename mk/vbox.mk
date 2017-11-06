@@ -2,7 +2,7 @@ VBOXMAN := VBoxManage
 VBOX_OS ?= NOSET_VBOX_OS
 VBOX_VM := mkvm-$(VM_ID)
 VBOX_MEM ?= 512
-VBOX_HDD := $(WORKDIR)/$(VM_ID)-hdd.vhd
+VBOX_HDD := $(WORKDIR)/vbox/$(VM_ID)-hdd.vhd
 VBOX_HDD_MB ?= 16384
 VBOX_HDD_FORMAT := VHD
 
@@ -25,7 +25,8 @@ vbox-vm: $(VBOX_HDD) .vbox.vm
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vbox $(VBOX_VM)'
 	@echo '>>>'
-	$(VBOXMAN) createvm --name $(VBOX_VM) --ostype $(VBOX_OS) --register
+	$(VBOXMAN) createvm --name $(VBOX_VM) --ostype $(VBOX_OS) --register \
+		--basefolder $(PWD)/$(WORKDIR)/vbox
 	$(VBOXMAN) modifyvm $(VBOX_VM) \
 		--memory $(VBOX_MEM) \
 		--acpi on \
