@@ -16,4 +16,4 @@ $(BOX_PKG): .vbox.install
 	@echo '>>> $(VM_ID): vagrant package'
 	@echo '>>>'
 	mkdir -p dist
-	vagrant package --base '$(VBOX_VM)' --output $(BOX_PKG)
+	vagrant package --base '$(VM_ID)' --output $(BOX_PKG)
