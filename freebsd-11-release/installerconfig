@@ -4,3 +4,4 @@ DISTRIBUTIONS="kernel.txz base.txz"
 #!/bin/sh -eu
 echo "installerconfig"
 date -R
+sleep 5
