@@ -1,0 +1,19 @@
+VAGRANT := vagrant
+BOX_PKG := dist/$(VM_ID).box
+
+.PHONY: vagrant-clean
+vagrant-clean:
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vagrant clean'
+	@echo '>>>'
+	rm -vf $(BOX_PKG)
+
+.PHONY: vagrant-box
+vagrant-box: $(BOX_PKG)
+
+$(BOX_PKG): .vbox.install
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vagrant package'
+	@echo '>>>'
+	mkdir -p dist
+	vagrant package --base '$(VBOX_VM)' --output $(BOX_PKG)
