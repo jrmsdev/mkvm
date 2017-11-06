@@ -23,12 +23,12 @@ distclean: clean
 	@echo '>>>'
 	@echo '>>> $(VM_ID): distclean'
 	@echo '>>>'
+	@$(MAKE) vbox-clean
 	@rm -vrf work
-	@$(MAKE) vbox-distclean
 
 .PHONY: build
 build:
-	@$(MAKE) vbox-vm build-installer vm-install
+	@$(MAKE) vbox-vm build-installer vbox-install
 
 # -- include helpers
 include ../mk/installer.mk

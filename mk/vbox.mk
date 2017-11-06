@@ -2,16 +2,16 @@ VBOXMAN := VBoxManage
 VBOX_OS ?= NOSET_VBOX_OS
 VBOX_VM := mkvm-$(VM_ID)
 VBOX_MEM ?= 512
-VBOX_HDD := $(WORKDIR)/vbox/$(VM_ID)-hdd.vhd
+VBOX_HDD := $(WORKDIR)/vbox/$(VM_ID)/$(VM_ID)-hdd.vhd
 VBOX_HDD_MB ?= 16384
 VBOX_HDD_FORMAT := VHD
 
 # -- cleanup
 
-.PHONY: vbox-distclean
-vbox-distclean:
+.PHONY: vbox-clean
+vbox-clean:
 	@echo '>>>'
-	@echo '>>> $(VM_ID): vbox distclean'
+	@echo '>>> $(VM_ID): vbox clean'
 	@echo '>>>'
 	$(VBOXMAN) unregistervm $(VBOX_VM) --delete
 	@rm -vf .vbox.*
@@ -33,7 +33,7 @@ vbox-vm: $(VBOX_HDD) .vbox.vm
 		--cpu-profile host \
 		--cpus 2 \
 		--rtcuseutc on \
-		--boot1 hdd \
+		--boot1 disk \
 		--boot2 dvd \
 		--boot3 none \
 		--boot4 none \
@@ -59,10 +59,10 @@ $(VBOX_HDD):
 
 # -- vm actions
 
-.PHONY: vm-install
-vm-install: .vm.install
+.PHONY: vbox-install
+vbox-install: .vbox.install
 
-.vm.install: $(ISO_NEW)
+.vbox.install: $(ISO_NEW)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): install'
 	@echo '>>>'
@@ -70,10 +70,10 @@ vm-install: .vm.install
 		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
 	$(VBOXMAN) modifyvm $(VBOX_VM) --boot1 dvd --boot2 disk
 	$(VBOXMAN) startvm $(VBOX_VM) --type gui
-	@touch .vm.install
+	@touch .vbox.install
 
-.PHONY: vm-start
-vm-start:
+.PHONY: vbox-start
+vbox-start:
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vbox start'
 	@echo '>>>'
