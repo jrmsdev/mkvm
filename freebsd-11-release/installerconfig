@@ -5,4 +5,4 @@ DISTRIBUTIONS="kernel.txz base.txz"
 echo "mkvm vm installation done!!"
 date -R
 sleep 5
-shutdown -p now
+poweroff

@@ -33,8 +33,8 @@ vbox-vm: $(VBOX_HDD) .vbox.vm
 		--cpu-profile host \
 		--cpus 2 \
 		--rtcuseutc on \
-		--boot1 dvd \
-		--boot2 none \
+		--boot1 hdd \
+		--boot2 dvd \
 		--boot3 none \
 		--boot4 none \
 		--ioapic on \
@@ -57,13 +57,22 @@ $(VBOX_HDD):
 	$(VBOXMAN) createmedium disk --filename $(VBOX_HDD) \
 		--size $(VBOX_HDD_MB) --format $(VBOX_HDD_FORMAT)
 
-# -- install vm
+# -- vm actions
 
 .PHONY: vm-install
-vm-install:
+vm-install: $(ISO_NEW)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): install'
 	@echo '>>>'
 	$(VBOXMAN) storageattach $(VBOX_VM) --storagectl 'IDE Controller' \
 		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
+	$(VBOXMAN) modifyvm $(VBOX_VM) --boot1 dvd --boot2 disk
+	$(VBOXMAN) startvm $(VBOX_VM) --type gui
+
+.PHONY: vm-start
+vm-start:
+	@echo '>>>'
+	@echo '>>> $(VM_ID): vbox start'
+	@echo '>>>'
+	$(VBOXMAN) modifyvm $(VBOX_VM) --boot1 disk --boot2 dvd
 	$(VBOXMAN) startvm $(VBOX_VM) --type gui
