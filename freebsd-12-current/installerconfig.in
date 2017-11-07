@@ -1,0 +1,29 @@
+PARTITIONS=ada0
+DISTRIBUTIONS="[BSDINSTALL_DISTRIBUTIONS]"
+
+#!/bin/sh -veu
+
+date -R
+
+cat <<EOF >/boot/loader.conf
+autoboot_delay="4"
+EOF
+
+cat <<EOF >/etc/rc.conf
+hostname="[VM_ID]"
+keymap="latinamerican.acc"
+syslogd_flags="-ss"
+virecover_enable="NO"
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+clear_tmp_enable="YES"
+ifconfig_em0="DHCP"
+EOF
+
+sync
+sleep 3
+sync
+
+poweroff

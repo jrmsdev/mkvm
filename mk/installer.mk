@@ -33,7 +33,7 @@ $(ISO_NEW): .rootfs
 	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
 	rm -rf $(ROOTFS)
 	mkdir -p $(ROOTFS)
-	tar -C $(ROOTFS) -xf $(ISO_ORIG)
+	bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
 	$(MAKE) vm-rootfs
 	@touch .rootfs
 
