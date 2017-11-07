@@ -3,8 +3,10 @@
 .PHONY: default
 default: build
 
-# -- vars include
+# -- include vm config
+include ./vm.mk
 
+# -- vars include
 include ../mk/vars.mk
 
 # -- main targets

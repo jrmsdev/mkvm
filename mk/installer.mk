@@ -3,6 +3,7 @@ ISO_SHA256 ?= NOSET_ISO_SHA256
 ISO_XZ ?= false
 ISO_ORIG := $(WORKDIR)/orig.iso
 ISO_NEW := $(WORKDIR)/$(VM_ID).iso
+ISO_MKFS_ARGS ?= NOSET_ISO_BOOT_ARGS
 
 # -- ISO files
 
@@ -14,15 +15,19 @@ $(ISO_ORIG):
 	@echo '>>> $(VM_ID): fetch iso'
 	@echo '>>>'
 	mkdir -p $(WORKDIR)
-	fetch -r -o $(ISO_ORIG).xz $(ISO_URL)
-	$(ISO_XZ) && unxz $(ISO_ORIG).xz
+	@if $(ISO_XZ); then \
+		fetch -r -o $(ISO_ORIG).xz $(ISO_URL); \
+		unxz $(ISO_ORIG).xz; \
+	else \
+		fetch -r -o $(ISO_ORIG) $(ISO_URL); \
+	fi
 
 $(ISO_NEW): .rootfs
 	@echo '>>>'
 	@echo '>>> $(VM_ID): mkisofs'
 	@echo '>>>'
-	fakeroot mkisofs -quiet -J -R -no-emul-boot -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
-		-b boot/cdboot -o $(ISO_NEW) $(ROOTFS)
+	fakeroot mkisofs -quiet -J -no-emul-boot -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
+		-R $(ISO_MKFS_ARGS) -o $(ISO_NEW) $(ROOTFS)
 
 # -- rootfs
 
@@ -33,7 +38,7 @@ $(ISO_NEW): .rootfs
 	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
 	rm -rf $(ROOTFS)
 	mkdir -p $(ROOTFS)
-	bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
+	fakeroot bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
 	$(MAKE) vm-rootfs
 	@touch .rootfs
 

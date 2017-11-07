@@ -13,7 +13,7 @@ vbox-clean:
 	@echo '>>> $(VM_ID): vbox clean'
 	@echo '>>>'
 	$(VBOXMAN) unregistervm $(VM_ID) --delete || echo "error ignored: $$?"
-	@rm -vf .vbox.*
+	rm -vf .vbox.*
 
 # -- create vm
 

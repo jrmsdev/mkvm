@@ -1,6 +1,7 @@
 DIST_URL ?= NOSET_DIST_URL
 DISTDIR := $(ROOTFS)/usr/freebsd-dist
 BSDINSTALL_DISTRIBUTIONS ?= kernel.txz base.txz
+ISO_MKFS_ARGS := -b boot/cdboot
 
 
 .PHONY: vm-clean
@@ -11,7 +12,7 @@ vm-clean:
 .PHONY: vm-rootfs
 vm-rootfs: .vm.distfiles
 	@echo '>>>'
-	@echo '>>> $(VM_ID): vm-rootfs'
+	@echo '>>> $(VM_ID): vm rootfs'
 	@echo '>>>'
 
 	echo '/dev/iso9660/$(VM_ID) / cd9660 ro 0 0' >$(ROOTFS)/etc/fstab
