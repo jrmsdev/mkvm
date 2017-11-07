@@ -1,8 +1,0 @@
-PARTITIONS=ada0
-DISTRIBUTIONS="kernel.txz base.txz"
-
-#!/bin/sh -eu
-echo "mkvm vm installation done!!"
-date -R
-sleep 5
-poweroff

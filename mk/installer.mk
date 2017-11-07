@@ -17,7 +17,7 @@ $(ISO_ORIG):
 	fetch -r -o $(ISO_ORIG).xz $(ISO_URL)
 	$(ISO_XZ) && unxz $(ISO_ORIG).xz
 
-$(ISO_NEW): .vm.rootfs
+$(ISO_NEW): .rootfs
 	@echo '>>>'
 	@echo '>>> $(VM_ID): mkisofs'
 	@echo '>>>'
@@ -26,7 +26,7 @@ $(ISO_NEW): .vm.rootfs
 
 # -- rootfs
 
-.vm.rootfs: $(ISO_ORIG)
+.rootfs: $(ISO_ORIG)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): iso extract'
 	@echo '>>>'
@@ -35,7 +35,7 @@ $(ISO_NEW): .vm.rootfs
 	mkdir -p $(ROOTFS)
 	tar -C $(ROOTFS) -xf $(ISO_ORIG)
 	$(MAKE) vm-rootfs
-	@touch .vm.rootfs
+	@touch .rootfs
 
 $(MKVM_TXT):
 	@echo '>>>'

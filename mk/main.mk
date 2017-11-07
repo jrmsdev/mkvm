@@ -10,24 +10,27 @@ include ../mk/vars.mk
 # -- main targets
 
 .PHONY: clean
-clean: vagrant-clean
+clean: vm-clean vagrant-clean
 	@echo '>>>'
 	@echo '>>> $(VM_ID): clean'
 	@echo '>>>'
-	@rm -rf $(WORKDIR)/rootfs/*
-	@rm -vrf $(WORKDIR)/rootfs
-	@rm -vf $(ISO_NEW) .vm.*
+	@rm -vf $(ISO_NEW)
 
 .PHONY: distclean
 distclean: clean vbox-clean
 	@echo '>>>'
 	@echo '>>> $(VM_ID): distclean'
 	@echo '>>>'
+	@rm -rf $(WORKDIR)/rootfs/*
+	@rm -vrf $(WORKDIR)/rootfs
+	@rm -vf .rootfs
 	@rm -vrf work dist
 
 .PHONY: build
-build:
-	@$(MAKE) vbox-vm build-installer vbox-install vagrant-box
+build: vbox-vm build-installer vbox-install
+
+.PHONY: dist
+dist: vagrant-box
 
 # -- include helpers
 include ../mk/installer.mk
