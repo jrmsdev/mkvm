@@ -1,5 +1,6 @@
-*/dist/
+ */dist2
 */work/
 */.vm.*
 */.vbox.*
 */.rootfs
+freebsd-*/installerconfig

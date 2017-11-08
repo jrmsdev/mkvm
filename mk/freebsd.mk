@@ -2,11 +2,12 @@ DIST_URL ?= NOSET_DIST_URL
 DISTDIR := $(ROOTFS)/usr/freebsd-dist
 BSDINSTALL_DISTRIBUTIONS ?= kernel.txz base.txz
 ISO_MKFS_ARGS := -J -R -no-emul-boot -b boot/cdboot
+FILESDIR := ../files/freebsd
 
 
 .PHONY: vm-clean
 vm-clean:
-	rm -vf .vm.* installerconfig
+	@rm -vf .vm.* installerconfig
 
 
 .PHONY: vm-rootfs
@@ -17,7 +18,7 @@ vm-rootfs: .rootfs .vm.distfiles
 
 	echo '/dev/iso9660/$(VM_ID) / cd9660 ro 0 0' >$(ROOTFS)/etc/fstab
 
-	cp installerconfig $(ROOTFS)/etc/installerconfig
+	cat installerconfig >$(ROOTFS)/etc/installerconfig
 
 	echo 'autoboot_delay="4"' >>$(ROOTFS)/boot/loader.conf
 
@@ -41,7 +42,7 @@ vm-rootfs: .rootfs .vm.distfiles
 	@touch .vm.distfiles
 
 
-installerconfig: installerconfig.in
-	@cat installerconfig.in | \
+installerconfig: $(FILESDIR)/installerconfig
+	@cat $(FILESDIR)/installerconfig | \
 		sed 's/\[BSDINSTALL_DISTRIBUTIONS\]/$(BSDINSTALL_DISTRIBUTIONS)/' | \
 		sed 's/\[VM_ID\]/$(VM_ID)/' >installerconfig

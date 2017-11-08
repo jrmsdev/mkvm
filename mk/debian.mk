@@ -29,12 +29,14 @@ vm-rootfs: .vm.rootfs
 	@touch .vm.rootfs
 
 
+.PHONY: .vm.isolinux:
 .vm.isolinux:
 	(preseed_md5=`md5 -r $(ROOTFS)/preseed.cfg`; \
 	cat $(FILESDIR)/isolinux.cfg | \
 		sed "s#\[PRESEED_MD5\]#$${preseed_md5}#" >$(ROOTFS)/isolinux/isolinux.cfg)
 
 
+.PHONY: .vm.preseed:
 .vm.preseed:
 	cat $(FILESDIR)/preseed.cfg | \
 		sed 's/\[VM_NAME\]/$(VM_NAME)/' >$(ROOTFS)/preseed.cfg
