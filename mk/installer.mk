@@ -26,8 +26,8 @@ $(ISO_NEW): .rootfs
 	@echo '>>>'
 	@echo '>>> $(VM_ID): mkisofs'
 	@echo '>>>'
-	fakeroot mkisofs -quiet -J -no-emul-boot -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
-		-R $(ISO_MKFS_ARGS) -o $(ISO_NEW) $(ROOTFS)
+	fakeroot mkisofs $(ISO_MKFS_ARGS) -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
+		-o $(ISO_NEW) $(ROOTFS)
 
 # -- rootfs
 
@@ -38,7 +38,7 @@ $(ISO_NEW): .rootfs
 	@sha256 -c $(ISO_SHA256) $(ISO_ORIG)
 	rm -rf $(ROOTFS)
 	mkdir -p $(ROOTFS)
-	fakeroot bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
+	bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
 	$(MAKE) vm-rootfs
 	@touch .rootfs
 
