@@ -13,10 +13,7 @@ include ../mk/vars.mk
 
 .PHONY: clean
 clean: vm-clean vagrant-clean
-	@echo '>>>'
-	@echo '>>> $(VM_ID): clean'
-	@echo '>>>'
-	@rm -vf $(ISO_NEW)
+	@rm -vf $(ISO_NEW) .vbox.install
 
 .PHONY: distclean
 distclean: clean vbox-clean
@@ -29,7 +26,7 @@ distclean: clean vbox-clean
 	@rm -vrf work dist
 
 .PHONY: build
-build: vbox-vm build-installer vbox-install
+build: build-installer vbox-vm vbox-install
 
 .PHONY: dist
 dist: vagrant-box

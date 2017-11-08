@@ -22,12 +22,12 @@ $(ISO_ORIG):
 		fetch -r -o $(ISO_ORIG) $(ISO_URL); \
 	fi
 
-$(ISO_NEW): .rootfs
+$(ISO_NEW): .rootfs vm-rootfs
 	@echo '>>>'
 	@echo '>>> $(VM_ID): mkisofs'
 	@echo '>>>'
 	fakeroot mkisofs $(ISO_MKFS_ARGS) -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
-		-o $(ISO_NEW) $(ROOTFS)
+		 -quiet -o $(ISO_NEW) $(ROOTFS)
 
 # -- rootfs
 
@@ -39,7 +39,6 @@ $(ISO_NEW): .rootfs
 	rm -rf $(ROOTFS)
 	mkdir -p $(ROOTFS)
 	bsdtar -C $(ROOTFS) -xf $(ISO_ORIG)
-	$(MAKE) vm-rootfs
 	@touch .rootfs
 
 $(MKVM_TXT):

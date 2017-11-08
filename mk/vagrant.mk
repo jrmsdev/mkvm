@@ -3,10 +3,7 @@ BOX_PKG := dist/$(VM_ID).box
 
 .PHONY: vagrant-clean
 vagrant-clean:
-	@echo '>>>'
-	@echo '>>> $(VM_ID): vagrant clean'
-	@echo '>>>'
-	rm -vf $(BOX_PKG)
+	@rm -vf $(BOX_PKG)
 
 .PHONY: vagrant-box
 vagrant-box: $(BOX_PKG)

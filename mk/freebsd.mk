@@ -1,7 +1,7 @@
 DIST_URL ?= NOSET_DIST_URL
 DISTDIR := $(ROOTFS)/usr/freebsd-dist
 BSDINSTALL_DISTRIBUTIONS ?= kernel.txz base.txz
-ISO_MKFS_ARGS := -quiet -J -R -no-emul-boot -b boot/cdboot
+ISO_MKFS_ARGS := -J -R -no-emul-boot -b boot/cdboot
 
 
 .PHONY: vm-clean
@@ -10,7 +10,7 @@ vm-clean:
 
 
 .PHONY: vm-rootfs
-vm-rootfs: .vm.distfiles
+vm-rootfs: .rootfs .vm.distfiles
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vm rootfs'
 	@echo '>>>'

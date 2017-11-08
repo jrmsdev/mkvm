@@ -9,11 +9,8 @@ VBOX_HDD_FORMAT := VHD
 
 .PHONY: vbox-clean
 vbox-clean:
-	@echo '>>>'
-	@echo '>>> $(VM_ID): vbox clean'
-	@echo '>>>'
-	$(VBOXMAN) unregistervm $(VM_ID) --delete || echo "error ignored: $$?"
-	rm -vf .vbox.*
+	@$(VBOXMAN) unregistervm $(VM_ID) --delete || echo "error ignored: $$?"
+	@rm -vf .vbox.*
 
 # -- create vm
 
