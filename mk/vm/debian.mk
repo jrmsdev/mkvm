@@ -39,4 +39,5 @@ vm-rootfs: .vm.rootfs
 .PHONY: .vm.preseed:
 .vm.preseed:
 	cat $(FILESDIR)/preseed.cfg | \
+		sed 's/\[DEBIAN_SUITE\]/$(DEBIAN_SUITE)/' | \
 		sed 's/\[VM_NAME\]/$(VM_NAME)/' >$(ROOTFS)/preseed.cfg

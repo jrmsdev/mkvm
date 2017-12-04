@@ -11,9 +11,15 @@ include ../mk/vars.mk
 
 # -- main targets
 
+.PHONY: build
+build: build-installer vbox-install
+
 .PHONY: clean
 clean: vm-clean vagrant-clean
 	@rm -vf $(ISO_NEW) .vbox.install
+
+.PHONY: dist
+dist: vagrant-box
 
 .PHONY: distclean
 distclean: clean vbox-clean
@@ -24,12 +30,6 @@ distclean: clean vbox-clean
 	@rm -vrf $(WORKDIR)/rootfs
 	@rm -vf .rootfs
 	@rm -vrf work dist
-
-.PHONY: build
-build: build-installer vbox-vm vbox-install
-
-.PHONY: dist
-dist: vagrant-box
 
 # -- include helpers
 include ../mk/installer.mk

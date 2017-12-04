@@ -14,10 +14,10 @@ vbox-clean:
 
 # -- create vm
 
-.PHONY: vbox-vm
-vbox-vm: $(VBOX_HDD) .vbox.vm
+.PHONY: vbox-create
+vbox-create: .vbox.vm
 
-.vbox.vm:
+.vbox.vm: $(VBOX_HDD)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vbox $(VM_ID)'
 	@echo '>>>'
@@ -66,6 +66,8 @@ vbox-install: .vbox.install
 		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
 	$(VBOXMAN) modifyvm $(VM_ID) --boot1 dvd --boot2 disk
 	$(VBOXMAN) startvm $(VM_ID) --type gui
+	@VBOXPID=`pgrep -lfa VirtualBox | grep -F $(VM_ID) | cut -d ' ' -f 1`; \
+		wait $$VBOXPID
 	@touch .vbox.install
 
 .PHONY: vbox-start

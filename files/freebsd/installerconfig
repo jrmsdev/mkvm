@@ -22,8 +22,8 @@ clear_tmp_enable="YES"
 ifconfig_em0="DHCP"
 EOF
 
-sync
+sync ; sync ; sync
 sleep 3
-sync
+sync ; sync ; sync
 
 poweroff

@@ -28,6 +28,7 @@ $(ISO_NEW): .rootfs vm-rootfs
 	@echo '>>>'
 	fakeroot mkisofs $(ISO_MKFS_ARGS) -V '$(VM_ID)' -p 'jrmsdev/mkvm' \
 		 -quiet -o $(ISO_NEW) $(ROOTFS)
+	@touch $(ISO_NEW)
 
 # -- rootfs
 

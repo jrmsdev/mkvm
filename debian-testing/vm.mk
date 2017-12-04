@@ -1,4 +1,5 @@
-VM_NAME := debian-testing
+DEBIAN_SUITE := testing
+VM_NAME := debian-$(DEBIAN_SUITE)
 VM_VERSION := 0.0
 VM_VERSION_DATE := 2017/12/04
 

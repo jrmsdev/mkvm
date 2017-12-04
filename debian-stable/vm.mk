@@ -1,4 +1,5 @@
-VM_NAME := debian-stable
+DEBIAN_SUITE := stable
+VM_NAME := debian-$(DEBIAN_SUITE)
 VM_VERSION := 0.0
 
 ISO_BASE := https://cdimage.debian.org/debian-cd/current/amd64/iso-cd
