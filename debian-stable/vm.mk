@@ -11,4 +11,4 @@ VBOX_OS := Debian_64
 VBOX_MEM := 512
 VBOX_HDD_MB := 10240
 
-include ../mk/debian.mk
+include ../mk/vm/debian.mk

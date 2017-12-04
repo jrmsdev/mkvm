@@ -15,4 +15,4 @@ VBOX_OS := FreeBSD_64
 VBOX_MEM := 512
 VBOX_HDD_MB := 10240
 
-include ../mk/freebsd.mk
+include ../mk/vm/freebsd.mk
