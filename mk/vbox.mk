@@ -66,8 +66,9 @@ vbox-install: .vbox.install
 		--port 1 --device 0 --type dvddrive --medium $(ISO_NEW)
 	$(VBOXMAN) modifyvm $(VM_ID) --boot1 dvd --boot2 disk
 	$(VBOXMAN) startvm $(VM_ID) --type gui
-	@VBOXPID=`pgrep -lfa VirtualBox | grep -F $(VM_ID) | cut -d ' ' -f 1`; \
-		wait $$VBOXPID
+	@while pgrep -lfa VirtualBox | grep -v grep | grep -F $(VM_ID) >/dev/null; do \
+		echo -n '.'; sleep 1; \
+	done; echo 'done!'
 	@touch .vbox.install
 
 .PHONY: vbox-start
