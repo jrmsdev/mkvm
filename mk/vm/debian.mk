@@ -23,6 +23,9 @@ vm-rootfs: .vm.rootfs
 	@echo '>>>'
 	find $(ROOTFS) -type d -exec chmod u+w {} \;
 	find $(ROOTFS) -type f -exec chmod u+w {} \;
+	mkdir -p $(ROOTFS)/mkvm/late_command
+	install -m 0755 $(FILESDIR)/late_command/runall $(ROOTFS)/mkvm/late_command
+	install -m 0755 $(FILESDIR)/late_command/*-* $(ROOTFS)/mkvm/late_command
 	$(MAKE) .vm.preseed .vm.isolinux
 	(cd $(ROOTFS) && (rm -f md5sum.txt; \
 		find . -follow -type f | sort -u | xargs md5 -r >md5sum.txt))

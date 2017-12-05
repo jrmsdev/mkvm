@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+printf '%%vagrant\tALL=NOPASSWD: ALL\n' >/target/etc/sudoers.d/vagrant
+chmod 0440 /target/etc/sudoers.d/vagrant

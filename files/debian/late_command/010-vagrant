@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+PUBKEY_URL=https://raw.github.com/hashicorp/vagrant/master/keys/vagrant.pub
+
+in-target wget -q -O ~vagrant/.ssh/authorized_keys ${PUBKEY_URL}
+in-target --pass-stdout du -sh ~vagrant/.ssh/authorized_keys

@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+egrep '^deb' /target/etc/apt/sources.list
