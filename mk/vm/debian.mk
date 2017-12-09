@@ -19,7 +19,7 @@ vm-rootfs:  $(VBGA_ISO) .vm.rootfs
 
 # vbox guest additions
 $(VBGA_FILE):
-	cd $(WORKDIR) && fetch -o $(VBGA_FILE) $(VBGA_URL)
+	cd $(WORKDIR) && fetch -r -o $(VBGA_FILE) $(VBGA_URL)
 	@touch $(VBGA_FILE)
 
 $(VBGA_ISO): $(VBGA_FILE)
