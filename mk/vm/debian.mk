@@ -25,7 +25,7 @@ $(VBGA_ISO): $(VBGA_FILE)
 	cd $(WORKDIR) && tar -xJf $(VBGA_FILE)
 
 
-.vm.rootfs:
+.vm.rootfs: $(VBGA_ISO)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vm rootfs'
 	@echo '>>>'
