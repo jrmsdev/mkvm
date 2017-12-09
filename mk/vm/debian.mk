@@ -17,18 +17,30 @@ vm-clean:
 vm-rootfs: .vm.rootfs
 
 
+# vbox guest additions
+$(VBGA_FILE):
+	cd $(WORKDIR) && fetch -o $(VBGA_FILE) $(VBGA_URL)
+
+$(VBGA_ISO): $(VBGA_FILE)
+	cd $(WORKDIR) && tar -xJf $(VBGA_FILE)
+
+
 .vm.rootfs:
 	@echo '>>>'
 	@echo '>>> $(VM_ID): vm rootfs'
 	@echo '>>>'
 	find $(ROOTFS) -type d -exec chmod u+w {} \;
 	find $(ROOTFS) -type f -exec chmod u+w {} \;
+	mkdir -p $(ROOTFS)/mkvm
+	cp -a $(VBGA_ISO) $(ROOTFS)/mkvm/vbox-guest-additions.iso
 	mkdir -p $(ROOTFS)/mkvm/late_command
 	install -m 0755 $(FILESDIR)/late_command/runall $(ROOTFS)/mkvm/late_command
 	install -m 0755 $(FILESDIR)/late_command/*-* $(ROOTFS)/mkvm/late_command
 	$(MAKE) .vm.preseed .vm.isolinux
-	(cd $(ROOTFS) && (rm -f md5sum.txt; \
-		find . -follow -type f | sort -u | xargs md5 -r >md5sum.txt))
+	rm -f $(ROOTFS)/md5sum.txt $(ROOTFS)/../rootfs-md5sum.txt
+	cd $(ROOTFS) && find . -follow -type f | sort -u | xargs md5 -r >../rootfs-md5sum.txt
+	cat $(ROOTFS)/../rootfs-md5sum.txt >$(ROOTFS)/md5sum.txt
+	rm -f $(ROOTFS)/../rootfs-md5sum.txt
 	@touch .vm.rootfs
 
 

@@ -1,11 +1,12 @@
 #!/bin/sh -e
 
 export DEBIAN_FRONTEND=noninteractive
+chrootcmd='chroot /target'
 
-in-target apt-get clean
-in-target apt-get autoremove -y --purge
+${chrootcmd} apt-get clean
+${chrootcmd} apt-get autoremove -y --purge
 
-in-target apt-get autoremove -y --purge nano
+${chrootcmd} apt-get autoremove -y --purge nano
 
 rm -rf /target/var/lib/apt/lists/*
 rm -f /target/var/cache/apt/archives/*.deb
@@ -14,3 +15,5 @@ rm -f /target/var/cache/apt/*cache.bin
 grep -E '^deb http' /target/etc/apt/sources.list >/target/tmp/sources.list
 cat /target/tmp/sources.list >/target/etc/apt/sources.list
 rm -f /target/tmp/sources.list
+
+exit 0

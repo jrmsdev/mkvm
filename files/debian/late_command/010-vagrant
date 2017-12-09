@@ -2,5 +2,12 @@
 
 PUBKEY_URL=https://raw.github.com/hashicorp/vagrant/master/keys/vagrant.pub
 
-in-target wget -q -O ~vagrant/.ssh/authorized_keys ${PUBKEY_URL}
-in-target --pass-stdout du -sh ~vagrant/.ssh/authorized_keys
+chrootcmd='chroot /target'
+
+${chrootcmd} mkdir -vp /home/vagrant/.ssh
+${chrootcmd} wget -q -O /home/vagrant/.ssh/authorized_keys ${PUBKEY_URL}
+${chrootcmd} chmod 0640 /home/vagrant/.ssh/authorized_keys
+${chrootcmd} chmod 0750 /home/vagrant/.ssh
+${chrootcmd} chown -vR vagrant:vagrant /home/vagrant/.ssh
+
+exit 0

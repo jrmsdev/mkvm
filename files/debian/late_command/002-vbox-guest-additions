@@ -1,0 +1,29 @@
+#!/bin/sh -ex
+
+ISO_FILE=/cdrom/mkvm/vbox-guest-additions.iso
+chrootcmd='chroot /target'
+
+${chrootcmd} pwd
+
+apt-install build-essential module-assistant linux-headers-amd64
+
+mount -o bind /dev /target/dev
+mount -o bind /proc /target/proc
+mount -o bind /sys /target/sys
+
+mount -o loop ${ISO_FILE} /target/mnt
+
+mount | grep -F '/target'
+${chrootcmd} ls -lh /mnt
+
+${chrootcmd} /bin/sh /mnt/VBoxLinuxAdditions.run
+
+${chrootcmd} apt-get autoremove -y --purge build-essential module-assistant linux-headers-amd64
+${chrootcmd} apt-get clean
+
+umount /target/mnt
+umount /target/dev
+umount /target/proc
+umount /target/sys
+
+exit 0

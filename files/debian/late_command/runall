@@ -1,9 +1,16 @@
 #!/bin/sh -e
 
+logf=/target/root/late_command.log
 srcdir=`dirname $(realpath $0)`
-for s in `ls ${srcdir}/???-*`; do
-    echo "--- ${s}"
-    /bin/sh -e ${s}
+
+date -R >$logf
+ls ${srcdir}/???-* | sort >>$logf
+echo '---' >>$logf
+
+for s in `ls ${srcdir}/???-* | sort`; do
+    echo "--- ${s}" >>$logf 2>>$logf
+    /bin/sh -xe ${s} >>$logf 2>>$logf
 done
 
+rm -f /target/root/late_command.log
 exit 0

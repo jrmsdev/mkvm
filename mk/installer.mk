@@ -32,7 +32,7 @@ $(ISO_NEW): .rootfs vm-rootfs
 
 # -- rootfs
 
-.rootfs: $(ISO_ORIG)
+.rootfs: $(ISO_ORIG) $(VBGA_ISO)
 	@echo '>>>'
 	@echo '>>> $(VM_ID): iso extract'
 	@echo '>>>'
